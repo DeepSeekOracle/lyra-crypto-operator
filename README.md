@@ -10,6 +10,22 @@
 
 Read `CRYPTO_LATTICE_SEPARATION.md`. Token metrics ≠ `lattice.ok`. Install only when you explicitly run launches.
 
+## Wallet / keys (read this before LYRA autonomy tests)
+
+**This repo does not hold private keys.** Scripts only call the public Clawnch API and read/write **local JSON** under `state/` (gitignored).
+
+| Do | Don't |
+|----|--------|
+| Keep deployer wallet / mnemonic **outside** this repo (e.g. `I:\E Drive\…` vault, password manager, hardware wallet) | Never commit `.env`, `wallet*.json`, mnemonics, or `0x…` 64-char private keys |
+| Run `python scripts/scan_for_secrets.py --all` before push | Don't let agents write key material into this tree |
+
+```powershell
+python scripts/scan_for_secrets.py --install-hook   # optional pre-commit
+python scripts/push_github_auto.py                  # push (after scan in hook)
+```
+
+Real wallet autonomy tooling, if any, lives **elsewhere on your machine** — audit that path separately.
+
 ## Maintainer
 
 ```bash

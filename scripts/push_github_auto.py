@@ -122,6 +122,14 @@ def git_push(token: str) -> int:
 
 
 def main() -> int:
+    scan = subprocess.run(
+        [sys.executable, str(OPERATOR / "scripts" / "scan_for_secrets.py"), "--all"],
+        cwd=OPERATOR,
+        timeout=120,
+    )
+    if scan.returncode != 0:
+        print("BLOCKED: scan_for_secrets failed — fix before push", file=sys.stderr)
+        return 4
     token = load_token()
     if not token:
         print("NO_GITHUB_TOKEN", file=sys.stderr)
